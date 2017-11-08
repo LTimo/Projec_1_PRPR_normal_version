@@ -8,7 +8,7 @@
 
 FILE* fnc_v(void);
 void fnc_o(FILE *f);
-char** fnc_n(FILE *f);
+void fnc_n(FILE *f);
 
 
 int main() {
@@ -24,6 +24,8 @@ int main() {
 			case 'v': file = fnc_v();
 				break;
 			case 'o': fnc_o(file);
+				break;
+			case 'n': fnc_n(file);
 				break;
 		}
 
@@ -44,6 +46,7 @@ FILE* fnc_v(void) {
 		printf("Neotvoreny subor\n");
 		return (NULL);
 	}
+	rewind(f);
 
 	//going through whole file and printing in an apropriet format
 	printf("meno priezvisko: ");
@@ -75,13 +78,14 @@ FILE* fnc_v(void) {
 		}	
 	}
 	printf("\n");
+
 	return(f);
 }
 
 
 void fnc_o(FILE *f) {
 	int pozition_of_name, right_reward = 1, date_int, pozition_to_continue = 0, act_date, New_int;
-	char name[51], SPZ[10], New[4], cena[18], date[11], ch;
+	char name[51], SPZ[10], New[4], cena[18], date[11];
 	float cena_float;
 
 
@@ -153,7 +157,24 @@ void fnc_o(FILE *f) {
 	}
 }
 
-char** fnc_n() {
+void fnc_n(FILE *f) {
+	int number_of_lines;
+	char junck_data[53];
+
+	//file and error handling
+	if (f == NULL) {
+		return;
+	}
+	rewind(f);
+
+	//counting number of lines
+	for (number_of_lines = 0; number_of_lines > -1; number_of_lines++) {
+		fgets(junck_data, 53, f);
+		if (feof(f)) {
+			break;
+		}
+	}
+	printf("number of lines:%d", number_of_lines);
 
 }
 	
