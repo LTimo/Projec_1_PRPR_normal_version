@@ -81,7 +81,7 @@ void fnc_o(FILE *f) {
 	int act_date;
 	char ch;
 	char uselessdata[50], reward[9];
-	int pozition_of_name, right_reward = 1, date;
+	int pozition_of_name, right_reward = 1, date, pozition_to_continue = 0;
 
 
 	/*file check and rewind*/ {
@@ -109,14 +109,15 @@ void fnc_o(FILE *f) {
 
 		sscanf(uselessdata, "%d", &date);
 		//printf("%d\n", date);
-
-		//printf("%d\n", (date -act_date));
-		if ((act_date - date) >= 10000) {
+		pozition_to_continue = ftell(f);
+		//printf("%d\n", (date -act_date));									//zaciklene ale uz to hlada spravny datum 
+		if ((act_date - date) >= 10000) {									//treba upravit posuvanie fseeku 
 			fseek(f, pozition_of_name, SEEK_SET);
 			fgets(uselessdata, 50, f);
 			printf("%s", uselessdata);
 			printf("\n");
 		}
+		fseek(f, pozition_to_continue, SEEK_SET);     
 	}
 }
 	
