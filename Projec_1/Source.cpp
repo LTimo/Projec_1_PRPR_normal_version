@@ -77,7 +77,6 @@ FILE* fnc_v(void) {
 }
 
 
-
 void fnc_o(FILE *f) {
 	int act_date;
 	char ch;
@@ -109,11 +108,14 @@ void fnc_o(FILE *f) {
 		right_reward = 0;
 
 		sscanf(uselessdata, "%d", &date);
-		printf("%d\n", date);
+		//printf("%d\n", date);
 
-		printf("\n");
-		if (act_date < date) {
-			printf("yes");
+		//printf("%d\n", (date -act_date));
+		if ((act_date - date) >= 10000) {
+			fseek(f, pozition_of_name, SEEK_SET);
+			fgets(uselessdata, 50, f);
+			printf("%s", uselessdata);
+			printf("\n");
 		}
 	}
 }
