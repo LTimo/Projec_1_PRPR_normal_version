@@ -10,6 +10,7 @@ FILE*	fnc_v(void);
 void	fnc_o(FILE *f);
 char**	fnc_n(FILE *f,int *number_of_lines_P);
 void	fnc_s(char **SPZarray, int number_of_lines);
+void	fnc_p(char **SPZ_array, int number_of_lines);
 
 
 int main() {
@@ -22,11 +23,14 @@ int main() {
 	{
 		scanf("%c", &prikaz);
 		switch (prikaz) {
-		case 'v': file = fnc_v();
+		case 'v': 
+			file = fnc_v();
 			break;
-		case 'o': fnc_o(file);
+		case 'o': 
+			fnc_o(file);
 			break;
-		case 'n': SPZ_array = fnc_n(file, &number_of_lines);
+		case 'n':
+			SPZ_array = fnc_n(file, &number_of_lines);
 			break;
 		case 's':
 			//handling of array allocation error
@@ -38,6 +42,7 @@ int main() {
 				fnc_s(SPZ_array, number_of_lines);
 				break;
 			}
+		case 'p':fnc_p(SPZ_array, number_of_lines);
 		}
 
 	} while (prikaz != 'k');
@@ -218,5 +223,28 @@ void	fnc_s(char **SPZarray, int number_of_lines) {
 		printf("%c%c %c%c%c %c%c", SPZarray[i][0], SPZarray[i][1], SPZarray[i][2],
 			SPZarray[i][3], SPZarray[i][4], SPZarray[i][5], SPZarray[i][6], SPZarray[i][07]);
 		printf("\n");
+	}
+}
+
+void	fnc_p(char **SPZ_array, int number_of_lines) {
+	int palindrombool = 1;
+	
+	//going through SPZ_array and looking for palindrom
+	for (int j = 0; j < (number_of_lines / 5); j++) {
+		for (int i = 0; i < 3; i++) {
+			//palindrom check
+			if (SPZ_array[j][i] != SPZ_array[j][6 - i]) {
+				palindrombool = 0;
+				break;
+			}	
+			else
+			{
+				palindrombool = 1;
+			}
+		}
+		//print if SPZ is palindrom
+		if (palindrombool == 1) {
+			printf("%c%c\n", SPZ_array[j][0], SPZ_array[j][1]);
+		}
 	}
 }
