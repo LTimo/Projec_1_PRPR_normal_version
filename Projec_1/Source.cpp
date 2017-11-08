@@ -8,12 +8,12 @@
 
 FILE* fnc_v(void);
 void fnc_o(FILE *f);
-char** fnc_n(FILE *f);
+char** fnc_n(FILE *f,int *number_of_lines_P);
 
 
 int main() {
 	FILE *file = NULL;
-	int terminate = 1;
+	int terminate = 1, number_of_lines;
 	char prikaz;
 	char **SPZ_array = NULL;
 
@@ -25,7 +25,7 @@ int main() {
 				break;
 			case 'o': fnc_o(file);
 				break;
-			case 'n': SPZ_array = fnc_n(file);
+			case 'n': SPZ_array = fnc_n(file, &number_of_lines);
 				break;
 		}
 
@@ -84,7 +84,7 @@ FILE* fnc_v(void) {
 
 
 void fnc_o(FILE *f) {
-	int pozition_of_name, right_reward = 1, date_int, pozition_to_continue = 0, act_date, New_int;
+	int  right_reward = 1, date_int, pozition_to_continue = 0, act_date, New_int;
 	char name[51], SPZ[10], New[4], cena[18], date[11];
 	float cena_float;
 
@@ -157,10 +157,11 @@ void fnc_o(FILE *f) {
 	}
 }
 
-char** fnc_n(FILE *f) {
+char** fnc_n(FILE *f, int *number_of_lines_P) {
 	int number_of_lines;
 	char junck_data[53], ch;
 	char** SPZ_array;
+
 	//file and error handling
 	if (f == NULL) {
 		return NULL;
@@ -174,16 +175,18 @@ char** fnc_n(FILE *f) {
 			break;
 		}
 	}
-	//printf("number of lines:%d", number_of_lines);
+
+	//sending number of lines to main
+	*number_of_lines_P = number_of_lines+1;
+
+	//allocation and inicialization of array SPZ_array
 	rewind(f);
 	SPZ_array = (char**)malloc(number_of_lines/5*sizeof(char *));
 	for (int i = 0; i <= number_of_lines/5; i++) {
 		SPZ_array[i] = (char*)malloc(7 * sizeof(char));
 		fgets(junck_data, 53, f);
 		for (int j = 0; j < 10; j++) {
-			//ch = getc(f);
 			ch = getc(f);
-			printf("CH%d = %c\n",j, ch);
 			if (ch == '\n') {
 				SPZ_array[i][j] = '\0';
 				break;
@@ -194,9 +197,6 @@ char** fnc_n(FILE *f) {
 			fgets(junck_data, 53, f);
 		}
 
-	}
-	for (int i = 0; i <= ((number_of_lines / 5)); i++) {
-		printf("%s\n", SPZ_array[i]);
 	}
 	return SPZ_array;
 }
