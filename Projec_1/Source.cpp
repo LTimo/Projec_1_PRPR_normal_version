@@ -11,6 +11,7 @@ void	fnc_o(FILE *f);
 char**	fnc_n(FILE *f,int *number_of_lines_P);
 void	fnc_s(char **SPZarray, int number_of_lines);
 void	fnc_p(char **SPZ_array, int number_of_lines);
+void	fnc_z(char **SPZ_array, int number_of_lines);
 
 
 int main() {
@@ -50,6 +51,15 @@ int main() {
 			}
 			else {
 				fnc_p(SPZ_array, number_of_lines);
+				break;
+			}
+		case 'z':
+			//handling of array allocation error
+			if (SPZ_array == NULL) {
+				break;
+			}
+			else {
+				fnc_z(SPZ_array, number_of_lines);
 				break;
 			}
 		}
@@ -256,4 +266,25 @@ void	fnc_p(char **SPZ_array, int number_of_lines) {
 			printf("%c%c\n", SPZ_array[j][0], SPZ_array[j][1]);
 		}
 	}
+}
+
+void	fnc_z(char **SPZ_array, int number_of_lines) {
+	/*char SPZ[676][2];
+	char ch, ch1;
+	int pom_i = 0;
+
+	for (int l = 65; l <= 90; l++) {
+		for (int i = 65; i <= 90; i++) {
+			ch = l;
+			ch1 = i;
+			SPZ[pom_i][1] = l;
+			SPZ[pom_i][2] = l;
+			printf("%c%c\n", ch,ch1);
+			pom_i++;
+		}
+	}
+	printf("%d", pom_i);
+	for (int i = 0; i < pom_i; i++) {
+		printf("%s", SPZ[i]);
+	}*/
 }
