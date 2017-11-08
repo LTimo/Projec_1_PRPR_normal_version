@@ -8,6 +8,8 @@
 
 FILE* fnc_v(void);
 void fnc_o(FILE *f);
+char** fnc_n(FILE *f);
+
 
 int main() {
 	FILE *file = NULL;
@@ -36,15 +38,15 @@ FILE* fnc_v(void) {
 	char s;
 	int line = 1;
 
+	//opening of file and error handling
 	f = fopen("predaj.txt", "r");
 	if (f == NULL) {
 		printf("Neotvoreny subor\n");
 		return (NULL);
 	}
+
+	//going through whole file and printing in an apropriet format
 	printf("meno priezvisko: ");
-
-
-	// skrajsit kod !!!!!
 	while (!(feof(f))) {
 		
 		s = getc(f);
@@ -78,46 +80,80 @@ FILE* fnc_v(void) {
 
 
 void fnc_o(FILE *f) {
-	int act_date;
-	char ch;
-	char uselessdata[50], reward[9];
-	int pozition_of_name, right_reward = 1, date, pozition_to_continue = 0;
+	int pozition_of_name, right_reward = 1, date_int, pozition_to_continue = 0, act_date, New_int;
+	char name[51], SPZ[10], New[4], cena[18], date[11], ch;
+	float cena_float;
 
 
 	/*file check and rewind*/ {
 		if (f == NULL) {
-			printf("Neotvoreny subor");
+			//printf("Neotvoreny subor");
 			return;
 		}
 		rewind(f); }
 
-	scanf("%d", &act_date);
-
-
+	scanf("%d", &act_date);		//act date load
+	
+	//going through whole file and saving data WITHOUT \n !!!!!!
 	while (!(feof(f))) {
-
-		pozition_of_name = ftell(f);
-
-		//going through uselessdata
+		//name
+		for (int i = 0; i < 52; i++) {
+			name[i] = fgetc(f);
+			if (name[i] == '\n') {
+				name[i] = '\0';
+				break;
+			}
+		}
+		//SPZ
+		for (int i = 0; i < 10; i++) {
+			SPZ[i] = fgetc(f);
+			if (SPZ[i] == '\n') {
+				SPZ[i] = '\0';
+				break;
+			}
+		}
+		//cena
 		for (int i = 0; i < 4; i++) {
-			fgets(uselessdata, 50, f);
+			New[i] = fgetc(f);
+			if (New[i] == '\n') {
+				New[i] = '\0';
+				break;
+			}
+		}
+		for (int i = 0; i < 18; i++) {
+			cena[i] = fgetc(f);
+			if (cena[i] == '\n') {
+				cena[i] = '\0';
+				break;
+			}
+		}
+		//date
+		for (int i = 0; i < 11; i++) {
+			date[i] = fgetc(f);
+			if (date[i] == '\n') {
+				date[i] = '\0';
+				break;
+			}
 		}
 
-		//get date
-		fgets(uselessdata, 50, f);
-		right_reward = 0;
-
-		sscanf(uselessdata, "%d", &date);
-		//printf("%d\n", date);
-		pozition_to_continue = ftell(f);
-		//printf("%d\n", (date -act_date));									//zaciklene ale uz to hlada spravny datum 
-		if ((act_date - date) >= 10000) {									//treba upravit posuvanie fseeku 
-			fseek(f, pozition_of_name, SEEK_SET);
-			fgets(uselessdata, 50, f);
-			printf("%s", uselessdata);
-			printf("\n");
+		//chceck of date and some conversion to go along with them
+		sscanf(date, "%d", &date_int);
+		if ((act_date - date_int) >= 10000) {
+			sscanf(cena, "%f", &cena_float);
+			sscanf(New, "%d", &New_int);
+			if (New_int) {
+				cena_float = (cena_float * 0.015);
+			}
+			else
+			{
+				cena_float = (cena_float * 0.022);
+			}
+			printf("%s %s %.2f\n", name,SPZ,cena_float);
 		}
-		fseek(f, pozition_to_continue, SEEK_SET);     
 	}
+}
+
+char** fnc_n() {
+
 }
 	
