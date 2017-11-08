@@ -42,7 +42,16 @@ int main() {
 				fnc_s(SPZ_array, number_of_lines);
 				break;
 			}
-		case 'p':fnc_p(SPZ_array, number_of_lines);
+		case 'p':
+			//handling of array allocation error
+			if (SPZ_array == NULL) {
+				printf("Pole nie je vytvorene\n");
+				break;
+			}
+			else {
+				fnc_p(SPZ_array, number_of_lines);
+				break;
+			}
 		}
 
 	} while (prikaz != 'k');
