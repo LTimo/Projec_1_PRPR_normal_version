@@ -242,7 +242,7 @@ void	fnc_s(char **SPZarray, int number_of_lines) {
 	//prints from array of SPZ izi
 	for (int i = 0; i < (number_of_lines / 5); i++) {
 		printf("%c%c %c%c%c %c%c", SPZarray[i][0], SPZarray[i][1], SPZarray[i][2],
-			SPZarray[i][3], SPZarray[i][4], SPZarray[i][5], SPZarray[i][6], SPZarray[i][07]);
+			SPZarray[i][3], SPZarray[i][4], SPZarray[i][5], SPZarray[i][6]);
 		printf("\n");
 	}
 }
@@ -271,41 +271,42 @@ void	fnc_p(char **SPZ_array, int number_of_lines) {
 }
 
 void	fnc_z(char **SPZ_array, int number_of_lines) {
-	char(**SPZ);
-	char ch, ch1;
-	int pom_i = 0, *arra_int_SPZ;
+	char **Copy_SPZ_array, buffer[3];
+	int size_of_array = (number_of_lines / 5);
 
-	arra_int_SPZ = (int*)malloc(number_of_lines / 5 * sizeof(int));
+	//allocation of array of sting which will be copy of SPZ_array
+	Copy_SPZ_array = (char**)malloc(size_of_array*sizeof(char*));
 	for (int i = 0; i < number_of_lines / 5; i++) {
-		arra_int_SPZ[i] = 0;
-	}
-	SPZ = (char **)malloc(number_of_lines / 5 * sizeof(char*));
-	for (int i = 0; i < number_of_lines / 5; i++) {
-		SPZ[i] = (char *)malloc(4);
-		SPZ[i][0] = SPZ_array[i][0];
-		SPZ[i][1] = SPZ_array[i][1];
-		SPZ[i][2] = '0';
-		SPZ[i][3] = '\0';
+		Copy_SPZ_array[i] = (char*)malloc(3 * sizeof(char));
 	}
 
-	printf("%s\n", SPZ[0]);
-	printf("%s\n", SPZ[1]);
-	printf("%s\n", SPZ[2]);
-	printf("%s\n", SPZ[3]);
-	printf("%s\n", SPZ[4]);
-	
-	for (int j = 0; j < number_of_lines / 5; j++) {
-		pom_i = 0;
-		for (int i = 0; i < number_of_lines / 5; i++) {
-			if ((SPZ[j][1] == SPZ[i][1]) && (SPZ[j][2] == SPZ[i][2])) {
-				pom_i++;
+	//copying first two char of SPZ_array[i] to Copy_SPZ_array for further work
+	for (int i = 0; i < size_of_array; i++) {
+		for (int j = 0; j < 2; j++) {
+			Copy_SPZ_array[i][j] = SPZ_array[i][j];
+			//printf("%c", Copy_SPZ_array[i][j]);
+		}
+		Copy_SPZ_array[i][2] = '\0';
+	}
+
+	for (int i = 0; i < size_of_array;i++) {
+		if (Copy_SPZ_array[i] == NULL) {
+			continue;
+		}
+		for (int k = 0; k < 2; k++) {
+			buffer[k] = Copy_SPZ_array[i][k];
+		}
+		buffer[2] = '\0';
+		for (int j = i + 1; j < size_of_array ; j++) {
+			
+			if ((buffer[0] == Copy_SPZ_array[j][0]) && (buffer[1] == Copy_SPZ_array[j][1])) {
+				printf("%d_%d %s : rovna sa %c%c\n",i ,j ,buffer, Copy_SPZ_array[j][0], Copy_SPZ_array[j][1]);
+			}
+			else
+			{
+				printf("%d_%d %s ? %s\n",i ,j ,buffer, Copy_SPZ_array[j]);
 			}
 		}
-		
 	}
-	printf("%s\n", SPZ[0]);
-	printf("%s\n", SPZ[1]);
-	printf("%s\n", SPZ[2]);
-	printf("%s\n", SPZ[3]);
-	printf("%s\n", SPZ[4]);
+
 }
