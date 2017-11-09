@@ -272,7 +272,7 @@ void	fnc_p(char **SPZ_array, int number_of_lines) {
 
 void	fnc_z(char **SPZ_array, int number_of_lines) {
 	char **Copy_SPZ_array, buffer[3];
-	int size_of_array = (number_of_lines / 5), *pocet_array;
+	int size_of_array = (number_of_lines / 5), *pocet_array, max = 0;
 
 	//allocation of pocet_array
 	pocet_array = (int*)malloc(size_of_array * sizeof(int));
@@ -309,26 +309,33 @@ void	fnc_z(char **SPZ_array, int number_of_lines) {
 			
 			if ((buffer[0] == Copy_SPZ_array[j][0]) && (buffer[1] == Copy_SPZ_array[j][1])) {
 				pocet_array[i]++;
-				printf("%d_%d %s : rovna sa %c%c\n pocet%d = %d\n",i ,j ,buffer, Copy_SPZ_array[j][0], Copy_SPZ_array[j][1],i ,pocet_array[i]);
+			//	printf("%d_%d %s : rovna sa %c%c\n pocet%d = %d\n",i ,j ,buffer, Copy_SPZ_array[j][0], Copy_SPZ_array[j][1],i ,pocet_array[i]);
 				for (int l = 0; l < 3; l++) {
 					Copy_SPZ_array[j][l] = '\0';
 				}
 			}
 			else
 			{
-				printf("%d_%d %s ? %s\n",i ,j ,buffer, Copy_SPZ_array[j]);
+			//	printf("%d_%d %s ? %s\n",i ,j ,buffer, Copy_SPZ_array[j]);
 			}
 		}
 	}
 	//end of magic
 
-
+	for (int i = 0; i < size_of_array; i++) {
+		//printf("%d ? %d\n", max, pocet_array[i]);
+		if ((pocet_array[i] + 1) > max) {
+			max = pocet_array[i] + 1;
+		//	printf("ano");
+		}
+	}
 	
 	for (int i = 0; i < size_of_array; i++) {
 		if (Copy_SPZ_array[i][1] == '\0') {
 			break;
 		}
-		printf("%s %d\n", Copy_SPZ_array[i],(pocet_array[i]+1));
+		if (max == (pocet_array[i] + 1)) {
+			printf("%s %d\n", Copy_SPZ_array[i], (pocet_array[i] + 1));
+		}
 	}
-
 }
