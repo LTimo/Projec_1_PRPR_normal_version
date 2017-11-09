@@ -272,7 +272,16 @@ void	fnc_p(char **SPZ_array, int number_of_lines) {
 
 void	fnc_z(char **SPZ_array, int number_of_lines) {
 	char **Copy_SPZ_array, buffer[3];
-	int size_of_array = (number_of_lines / 5);
+	int size_of_array = (number_of_lines / 5), *pocet_array;
+
+	//allocation of pocet_array
+	pocet_array = (int*)malloc(size_of_array * sizeof(int));
+	for (int i = 0; i > size_of_array;i++){
+		pocet_array[i] = 0;
+	}
+	for (int i = 0; i > size_of_array; i++) {
+		printf("%d\n",pocet_array[i]);
+	}
 
 	//allocation of array of sting which will be copy of SPZ_array
 	Copy_SPZ_array = (char**)malloc(size_of_array*sizeof(char*));
@@ -289,8 +298,9 @@ void	fnc_z(char **SPZ_array, int number_of_lines) {
 		Copy_SPZ_array[i][2] = '\0';
 	}
 
+	//magic 
 	for (int i = 0; i < size_of_array;i++) {
-		if (Copy_SPZ_array[i] == NULL) {
+		if (Copy_SPZ_array[i][0] == '\0') {
 			continue;
 		}
 		for (int k = 0; k < 2; k++) {
@@ -301,12 +311,22 @@ void	fnc_z(char **SPZ_array, int number_of_lines) {
 			
 			if ((buffer[0] == Copy_SPZ_array[j][0]) && (buffer[1] == Copy_SPZ_array[j][1])) {
 				printf("%d_%d %s : rovna sa %c%c\n",i ,j ,buffer, Copy_SPZ_array[j][0], Copy_SPZ_array[j][1]);
+				for (int l = 0; l < 3; l++) {
+					Copy_SPZ_array[j][l] = '\0';
+				}
 			}
 			else
 			{
 				printf("%d_%d %s ? %s\n",i ,j ,buffer, Copy_SPZ_array[j]);
 			}
 		}
+	}
+	
+	for (int i = 0; i < size_of_array; i++) {
+		if (Copy_SPZ_array[i][1] == '\0') {
+			break;
+		}
+		printf("%s\n", Copy_SPZ_array[i]);
 	}
 
 }
