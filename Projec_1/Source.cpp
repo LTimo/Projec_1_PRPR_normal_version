@@ -192,6 +192,9 @@ void fnc_o(FILE *f) {
 	}
 }
 
+//pozriet vkladanie do pola a mazanie 
+//proidávanie riadkov atd
+
 char** fnc_n(FILE *f, int *number_of_lines_P) {
 	int number_of_lines;
 	char junck_data[53], ch;
