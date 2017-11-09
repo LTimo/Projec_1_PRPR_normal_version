@@ -226,7 +226,6 @@ char** fnc_n(FILE *f, int *number_of_lines_P) {
 		for (int j = 0; j < 10; j++) {
 			ch = getc(f);
 			if (ch == '\n') {
-				SPZ_array[i][j] = '\0';
 				break;
 			}
 			SPZ_array[i][j] = ch;
@@ -272,22 +271,41 @@ void	fnc_p(char **SPZ_array, int number_of_lines) {
 }
 
 void	fnc_z(char **SPZ_array, int number_of_lines) {
-	/*char SPZ[676][2];
+	char(**SPZ);
 	char ch, ch1;
-	int pom_i = 0;
+	int pom_i = 0, *arra_int_SPZ;
 
-	for (int l = 65; l <= 90; l++) {
-		for (int i = 65; i <= 90; i++) {
-			ch = l;
-			ch1 = i;
-			SPZ[pom_i][1] = l;
-			SPZ[pom_i][2] = l;
-			printf("%c%c\n", ch,ch1);
-			pom_i++;
-		}
+	arra_int_SPZ = (int*)malloc(number_of_lines / 5 * sizeof(int));
+	for (int i = 0; i < number_of_lines / 5; i++) {
+		arra_int_SPZ[i] = 0;
 	}
-	printf("%d", pom_i);
-	for (int i = 0; i < pom_i; i++) {
-		printf("%s", SPZ[i]);
-	}*/
+	SPZ = (char **)malloc(number_of_lines / 5 * sizeof(char*));
+	for (int i = 0; i < number_of_lines / 5; i++) {
+		SPZ[i] = (char *)malloc(4);
+		SPZ[i][0] = SPZ_array[i][0];
+		SPZ[i][1] = SPZ_array[i][1];
+		SPZ[i][2] = '0';
+		SPZ[i][3] = '\0';
+	}
+
+	printf("%s\n", SPZ[0]);
+	printf("%s\n", SPZ[1]);
+	printf("%s\n", SPZ[2]);
+	printf("%s\n", SPZ[3]);
+	printf("%s\n", SPZ[4]);
+	
+	for (int j = 0; j < number_of_lines / 5; j++) {
+		pom_i = 0;
+		for (int i = 0; i < number_of_lines / 5; i++) {
+			if ((SPZ[j][1] == SPZ[i][1]) && (SPZ[j][2] == SPZ[i][2])) {
+				pom_i++;
+			}
+		}
+		
+	}
+	printf("%s\n", SPZ[0]);
+	printf("%s\n", SPZ[1]);
+	printf("%s\n", SPZ[2]);
+	printf("%s\n", SPZ[3]);
+	printf("%s\n", SPZ[4]);
 }
