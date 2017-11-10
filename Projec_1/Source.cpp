@@ -200,7 +200,7 @@ char** fnc_n(FILE *f, int *number_of_lines_P) {
 	char junck_data[53], ch;
 	char** SPZ_array;
 
-	//file and error handling
+	//file error handling and rewind
 	if (f == NULL) {
 		return NULL;
 	}
@@ -263,6 +263,7 @@ void	fnc_p(char **SPZ_array, int number_of_lines) {
 				palindrombool = 1;
 			}
 		}
+
 		//print if SPZ is palindrom
 		if (palindrombool == 1) {
 			printf("%c%c\n", SPZ_array[j][0], SPZ_array[j][1]);
@@ -280,7 +281,7 @@ void	fnc_z(char **SPZ_array, int number_of_lines) {
 		pocet_array[i] = 0;
 	}
 
-	//allocation of array of sting which will be copy of SPZ_array
+	//allocation of array of stings which will be copy of SPZ_array
 	Copy_SPZ_array = (char**)malloc(size_of_array*sizeof(char*));
 	for (int i = 0; i < size_of_array; i++) {
 		Copy_SPZ_array[i] = (char*)malloc(3 * sizeof(char));
@@ -318,7 +319,7 @@ void	fnc_z(char **SPZ_array, int number_of_lines) {
 	}
 	//end of magic
 
-	//finding maximum of pocet array = pozition of most permutated SPZ in Copy_SPZ_array
+	//finding maximum of pocet_array => pozition of most permutated SPZ in Copy_SPZ_array
 	for (int i = 0; i < size_of_array; i++) {
 		if ((pocet_array[i] + 1) > max) {
 			max = pocet_array[i] + 1;
