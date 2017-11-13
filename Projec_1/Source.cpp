@@ -8,7 +8,7 @@
 
 FILE*	fnc_v(void);
 void	fnc_o(FILE *f);
-char**	fnc_n(FILE *f,int *number_of_lines_P);
+char**	fnc_n(FILE *f,int *number_of_lines_P, int n_runned);
 void	fnc_s(char **SPZarray, int number_of_lines);
 void	fnc_p(char **SPZ_array, int number_of_lines);
 void	fnc_z(char **SPZ_array, int number_of_lines);
@@ -32,9 +32,13 @@ int main() {
 			fnc_o(file);
 			break;
 		case 'n':	
+			//printf("%d", n_runned);
 			if (n_runned) {
-			}
-			SPZ_array = fnc_n(file, &number_of_lines);
+				//printf("runned");
+				SPZ_array = fnc_n(file, &number_of_lines, n_runned);
+				n_runned = 0;
+				}
+			SPZ_array = fnc_n(file, &number_of_lines, n_runned);
 			//printf("%d", number_of_lines);
 			if (v_runned) {
 				n_runned = 1;
@@ -132,7 +136,7 @@ FILE* fnc_v(void) {
 
 void fnc_o(FILE *f) {
 	int  right_reward = 1, date_int, pozition_to_continue = 0, act_date, New_int;
-	char name[51], SPZ[10], New[4], cena[18], date[11],junck;
+	char name[51], SPZ[10], New[4], cena[18], date[11], junck;
 	float cena_float;
 
 
@@ -144,7 +148,7 @@ void fnc_o(FILE *f) {
 		rewind(f); }
 
 	scanf("%d", &act_date);		//act date load
-	
+
 	//going through whole file and saving data WITHOUT \n !!!!!!
 	while (!(feof(f))) {
 		//name
@@ -186,7 +190,7 @@ void fnc_o(FILE *f) {
 				break;
 			}
 		}
-		
+		junck = fgetc(f);
 
 
 		//chceck of date and some conversion to go along with them
@@ -201,7 +205,7 @@ void fnc_o(FILE *f) {
 			{
 				cena_float = (cena_float * 0.022);
 			}
-			printf("%s %s %.2f\n", name,SPZ,cena_float);
+			printf("%s %s %.2f\n", name, SPZ, cena_float);
 		}
 	}
 }
@@ -209,7 +213,7 @@ void fnc_o(FILE *f) {
 //pozriet vkladanie do pola a mazanie 
 //proidávanie riadkov atd
 
-char** fnc_n(FILE *f, int *number_of_lines_P) {
+char** fnc_n(FILE *f, int *number_of_lines_P, int n_runned) {
 	int number_of_lines;
 	char junck_data[53], ch;
 	char** SPZ_array = NULL;
@@ -228,6 +232,16 @@ char** fnc_n(FILE *f, int *number_of_lines_P) {
 		}
 	}
 
+	/*if (n_runned > 0) {
+		printf("%d", n_runned);
+		for (int i = 0; i < number_of_lines / 6; i++) {
+			delete[](SPZ_array[i]);
+		}
+		delete[](SPZ_array);
+		return SPZ_array;
+	}
+	*/
+
 	//sending number of lines to main
 	*number_of_lines_P = number_of_lines+1;
 
@@ -241,6 +255,7 @@ char** fnc_n(FILE *f, int *number_of_lines_P) {
 		for (int j = 0; j < 10; j++) {
 			ch = getc(f);
 			if (ch == '\n') {
+				SPZ_array[i][j] = '\0';
 				fgets(junck_data, 53, f);
 				break;
 			}
