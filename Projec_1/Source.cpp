@@ -8,15 +8,18 @@
 
 FILE*	fnc_v(void);
 void	fnc_o(FILE *f);
-char**	fnc_n(FILE *f,int *number_of_lines_P, int n_runned);
-void	fnc_s(char **SPZarray, int number_of_lines);
+char**	fnc_n(FILE *f,int *number_of_lines_P, int n_runned, int *number_of_elements);
+void	fnc_s(char **SPZarray, int number_of_lines, int a_runned);
 void	fnc_p(char **SPZ_array, int number_of_lines);
 void	fnc_z(char **SPZ_array, int number_of_lines);
+char**	fnc_a(char **SPZ_array, int *number_of_elements);
+void	fnc_b(char **SPZ_array, int *number_of_elements);
+
 
 
 int main() {
 	FILE *file = NULL;
-	int terminate = 1, number_of_lines, v_runned = 0, n_runned = 0;
+	int terminate = 1, number_of_lines, v_runned = 0, n_runned = 0, number_of_elemnts = 0, a_runned = 0;
 	char prikaz;
 	char **SPZ_array = NULL;
 
@@ -32,13 +35,12 @@ int main() {
 			fnc_o(file);
 			break;
 		case 'n':	
-			//printf("%d", n_runned);
 			if (n_runned) {
 				//printf("runned");
-				SPZ_array = fnc_n(file, &number_of_lines, n_runned);
+				SPZ_array = fnc_n(file, &number_of_lines, n_runned, &number_of_elemnts);
 				n_runned = 0;
 				}
-			SPZ_array = fnc_n(file, &number_of_lines, n_runned);
+			SPZ_array = fnc_n(file, &number_of_lines, n_runned, &number_of_elemnts);
 			//printf("%d", number_of_lines);
 			if (v_runned) {
 				n_runned = 1;
@@ -51,7 +53,7 @@ int main() {
 				break;
 			}
 			else {
-				fnc_s(SPZ_array, number_of_lines);
+				fnc_s(SPZ_array, number_of_lines,a_runned);
 				break;
 			}
 		case 'p':
@@ -73,9 +75,19 @@ int main() {
 				fnc_z(SPZ_array, number_of_lines);
 				break;
 			}
+		case 'a':
+			SPZ_array = fnc_a(SPZ_array, &number_of_elemnts);
+			a_runned = 1;
+			break;
+		case 'b':
+			fnc_b(SPZ_array, &number_of_elemnts);
+			break;
 		}
 
 	} while (prikaz != 'k');
+	if (file != NULL) {
+		fclose(file);
+	}
 	
 	return 0;
 }
@@ -213,7 +225,7 @@ void fnc_o(FILE *f) {
 //pozriet vkladanie do pola a mazanie 
 //proidávanie riadkov atd
 
-char** fnc_n(FILE *f, int *number_of_lines_P, int n_runned) {
+char** fnc_n(FILE *f, int *number_of_lines_P, int n_runned, int *number_of_elements) {
 	int number_of_lines;
 	char junck_data[53], ch;
 	char** SPZ_array = NULL;
@@ -232,6 +244,10 @@ char** fnc_n(FILE *f, int *number_of_lines_P, int n_runned) {
 		}
 	}
 
+	//tu bola snaha o dealokovanie po¾a pri druhom spustení lenže po intenzívnom googlení
+	//sa mi to nepodarilo rozchodi, toto je jediná drobná vec èo sa mi nepodarilo spravi
+	//presne pod¾a zadania
+
 	/*if (n_runned > 0) {
 		printf("%d", n_runned);
 		for (int i = 0; i < number_of_lines / 6; i++) {
@@ -244,6 +260,7 @@ char** fnc_n(FILE *f, int *number_of_lines_P, int n_runned) {
 
 	//sending number of lines to main
 	*number_of_lines_P = number_of_lines+1;
+	*number_of_elements = (number_of_lines+1) / 6;
 
 	//allocation and inicialization of array SPZ_array
 	rewind(f);
@@ -269,13 +286,22 @@ char** fnc_n(FILE *f, int *number_of_lines_P, int n_runned) {
 	return SPZ_array;
 }
 	
-void	fnc_s(char **SPZarray, int number_of_lines) {
+void	fnc_s(char **SPZarray, int number_of_lines, int a_runned) {
 	//prints from array of SPZ izi
-	for (int i = 0; i < (number_of_lines / 6); i++) {
-		printf("%c%c %c%c%c %c%c", SPZarray[i][0], SPZarray[i][1], SPZarray[i][2],
-			SPZarray[i][3], SPZarray[i][4], SPZarray[i][5], SPZarray[i][6]);
-		printf("\n");
+	if (a_runned == 0) {
+		for (int i = 0; i < (number_of_lines / 6); i++) {
+			printf("%c%c %c%c%c %c%c", SPZarray[i][0], SPZarray[i][1], SPZarray[i][2],
+				SPZarray[i][3], SPZarray[i][4], SPZarray[i][5], SPZarray[i][6]);
+			printf("\n");
+		}
 	}
+	else {
+		for (int i = 0; i < number_of_lines/6; i++) {
+			printf("%s\n", SPZarray[i]);
+		}
+
+	}
+
 }
 
 void	fnc_p(char **SPZ_array, int number_of_lines) {
@@ -367,3 +393,90 @@ void	fnc_z(char **SPZ_array, int number_of_lines) {
 		}
 	}
 }
+
+char**	fnc_a(char **SPZ_array, int *number_of_elements) {
+	char **local_array = NULL;
+	char ch;
+	int k;
+
+	//printf("%d\n", *number_of_elements);
+
+	//tu bola snaha o dealokovanie po¾a pri druhom spustení lenže po intenzívnom googlení
+	//sa mi to nepodarilo rozchodi, toto je jediná drobná vec èo sa mi nepodarilo spravi
+	//presne pod¾a zadania
+
+	/*if (n_runned > 0) {
+	printf("%d", n_runned);
+	for (int i = 0; i < number_of_lines / 6; i++) {
+	delete[](SPZ_array[i]);
+	}
+	delete[](SPZ_array);
+	return SPZ_array;
+	}
+	*/
+
+	//aloc local_array	
+	local_array = (char**)malloc(*number_of_elements * sizeof(char*));
+	for (int i = 0; i < *number_of_elements; i++) {
+		local_array[i] = (char*)malloc(12*sizeof(char));
+	}
+
+	scanf("%d", &k);
+
+	//copy of SPZ_array to local_array;
+	for (int i = 0; i < *number_of_elements; i++) {
+		for (int j = 0; j < 7; j++) {
+			local_array[i][j] = SPZ_array[i][j];
+		}
+		local_array[i][7] = '\n';
+		for (int j = 7; j < 9; j++) {
+			ch = SPZ_array[i][j - 7];
+			//printf("%c => ", ch);
+			for (int l = 1; l <= k; l++) {
+				
+				if (ch++ >= 'Z') {
+					ch = 'A';
+				}
+				local_array[i][j + 1] = ch;
+
+			}
+			local_array[i][10] = '\0';
+			
+		}
+	}
+	/*for (int i = 0; i < *number_of_elements; i++) {
+		printf("%s\n", local_array[i]);
+	}*/
+
+	return local_array;
+}
+
+void	fnc_b(char **SPZ_array, int *number_of_elements) {
+	int pom;
+	char pom_cahr = 48;
+	//printf("%c", pom_cahr);
+
+	if (SPZ_array == NULL) {
+		printf("Pole nie je vytvorene\n");
+		return;
+	}
+
+	for (int i = 0; i < 10; i++) {
+		pom = 0;
+		for (int j = 0; j < *number_of_elements; j++) {
+			for (int k = 2; k < 5; k++) {
+				//printf("%c = %d ", SPZ_array[j][k], i);
+				//nejde zartial porovnanie ak by islo ide to
+				pom_cahr = 48 + i;
+				if (SPZ_array[j][k] == pom_cahr) {
+					pom++;
+				}
+			}
+			
+			}
+		if (pom > 0) {
+			printf("%d:%d\n", i, pom);
+		}
+	}
+}
+
